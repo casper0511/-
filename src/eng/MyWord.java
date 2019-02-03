@@ -96,14 +96,14 @@ public class MyWord {
 
 			// 设置列宽
 
-			sheet.setColumnView(0, 16);
-			sheet.setColumnView(1, 16);
-			sheet.setColumnView(2, 16);
-			sheet.setColumnView(3, 16);
-			sheet.setColumnView(4, 16);
-			sheet.setColumnView(5, 16);
-			sheet.setColumnView(6, 16);
-			sheet.setColumnView(7, 16);
+			sheet.setColumnView(0, 15);
+			sheet.setColumnView(1, 15);
+			sheet.setColumnView(2, 15);
+			sheet.setColumnView(3, 15);
+			sheet.setColumnView(4, 15);
+			sheet.setColumnView(5, 15);
+			sheet.setColumnView(6, 15);
+			sheet.setColumnView(7, 15);
 
 			// 行高
 			sheet.setRowView(0, 1100, false);// 设置第一行的高度
@@ -114,10 +114,10 @@ public class MyWord {
 			sheet.setRowView(5, 1100, false);// 设置第一行的高度
 			sheet.setRowView(6, 1100, false);// 设置第一行的高度
 			sheet.setRowView(7, 1100, false);// 设置第一行的高度
-			sheet.setRowView(8, 1100, false);// 设置第一行的高度
 
-			System.out.println(sheet.getColumns());
-			System.out.println(sheet.getRows());
+
+//			System.out.println(sheet.getColumns());
+//			System.out.println(sheet.getRows());
 
 			// Collections.shuffle(list); // 打乱字符串
 			// System.out.println(list);
@@ -153,17 +153,6 @@ public class MyWord {
 
 					a=a+2;
 				}
-				// Collections.shuffle(list);
-				// Label label3 = new Label(3, i, list.toString(), cellFormate);
-				// sheet.addCell(label3);
-				//
-				// Collections.shuffle(list);
-				// Label label5 = new Label(5, i, list.toString(), cellFormate);
-				// sheet.addCell(label5);
-				//
-				// Collections.shuffle(list);
-				// Label label7 = new Label(7, i, list.toString(), cellFormate);
-				// sheet.addCell(label7);
 
 				i = i + 2;
 			}
@@ -204,7 +193,7 @@ public class MyWord {
 
 		// String word = "apple";
 
-		createExcel(out, 1, words);
+		createExcel(out, 100, words);
 
 	}
 
