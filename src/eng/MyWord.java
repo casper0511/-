@@ -1,5 +1,6 @@
 package eng;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import jxl.format.PageOrientation;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
+import jxl.write.WritableImage;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -73,7 +75,7 @@ public class MyWord {
 			// 创建新的一页
 			WritableSheet sheet = workbook.createSheet(sheetname, 0);
 			sheet.setPageSetup(PageOrientation.LANDSCAPE);
-			List<String> getNumber = new ArrayList<String>();
+			// List<String> getNumber = new ArrayList<String>();
 
 			// 构造表头
 			// sheet.mergeCells(0, 0, 29, 0);//
@@ -89,22 +91,30 @@ public class MyWord {
 			// sheet.setRowView(0, 1200, false);// 设置第一行的高度
 			// sheet.addCell(title);
 
-			WritableFont cellbold = new WritableFont(WritableFont.ARIAL, 16, WritableFont.NO_BOLD);// 设置字体种类和黑体显示,字体为Arial,字号大小为10,采用黑体显示
+			WritableFont cellbold = new WritableFont(WritableFont.ARIAL, 10, WritableFont.NO_BOLD);// 设置字体种类和黑体显示,字体为Arial,字号大小为10,采用黑体显示
 			WritableCellFormat cellFormate = new WritableCellFormat(cellbold);// 生成一个单元格样式控制对象
 			cellFormate.setAlignment(jxl.format.Alignment.CENTRE);// 单元格中的内容水平方向居中
 			cellFormate.setVerticalAlignment(jxl.format.VerticalAlignment.CENTRE);// 单元格的内容垂直方向居中
 
 			// 设置列宽
+			// 4列图 4列单词 排不下，换成3列图 3列单词 
+//			sheet.setColumnView(0, 15);
+//			sheet.setColumnView(1, 15);
+//			sheet.setColumnView(2, 15);
+//			sheet.setColumnView(3, 15);
+//			sheet.setColumnView(4, 15);
+//			sheet.setColumnView(5, 15);
+//			sheet.setColumnView(6, 15);
+//			sheet.setColumnView(7, 15);
 
-			sheet.setColumnView(0, 15);
-			sheet.setColumnView(1, 15);
-			sheet.setColumnView(2, 15);
-			sheet.setColumnView(3, 15);
-			sheet.setColumnView(4, 15);
-			sheet.setColumnView(5, 15);
-			sheet.setColumnView(6, 15);
-			sheet.setColumnView(7, 15);
+			sheet.setColumnView(0, 20);
+			sheet.setColumnView(1, 20);
+			sheet.setColumnView(2, 20);
+			sheet.setColumnView(3, 20);
+			sheet.setColumnView(4, 20);
+			sheet.setColumnView(5, 20);
 
+			
 			// 行高
 			sheet.setRowView(0, 1100, false);// 设置第一行的高度
 			sheet.setRowView(1, 1100, false);// 设置第一行的高度
@@ -115,9 +125,8 @@ public class MyWord {
 			sheet.setRowView(6, 1100, false);// 设置第一行的高度
 			sheet.setRowView(7, 1100, false);// 设置第一行的高度
 
-
-//			System.out.println(sheet.getColumns());
-//			System.out.println(sheet.getRows());
+			// System.out.println(sheet.getColumns());
+			// System.out.println(sheet.getRows());
 
 			// Collections.shuffle(list); // 打乱字符串
 			// System.out.println(list);
@@ -127,12 +136,20 @@ public class MyWord {
 			// 共有9行 第1,3,5,7行填字母 2,4,6,8自己写
 			for (int i = 0; i < sheet.getRows();) {
 
-				for (int a = 1; a < 9; ) {
+				//a是列的遍历 4列a<9 3列a<7
+				for (int a = 1; a < 7;) {
 
+					// 从单词表中随机取一个单词
 					int randNumber = new Random().nextInt(words.length - 1) + 1;
-
-					System.out.println("get words rannumber:" + randNumber);
+					// System.out.println("get words rannumber:" + randNumber);
 					word = words[randNumber];
+
+					System.out.println("get file path:" + System.getProperty("user.dir")+"/pic/" + word + ".png");
+					
+//					String a1=System.getProperty("user.dir");
+//					System.out.println("user.dir:"+a1);
+					
+					File imgFile = new File(System.getProperty("user.dir")+"/pic/" + word + ".png");
 
 					int len = word.length();
 
@@ -147,11 +164,18 @@ public class MyWord {
 						list.add(String.valueOf(cc[(int) l.get(j)]));
 					}
 
+					// 打乱字母顺序
 					Collections.shuffle(list);
+					// a是列号 i是行号
+					// 插入图片
+					WritableImage image = new WritableImage(a - 1, i, 1, 2, imgFile);
+					sheet.addImage(image);
+
+					// 插入单词
 					Label label = new Label(a, i, list.toString(), cellFormate);
 					sheet.addCell(label);
 
-					a=a+2;
+					a = a + 2;
 				}
 
 				i = i + 2;
@@ -166,21 +190,32 @@ public class MyWord {
 
 	}
 
+	public static void InitWordlist() {
+		// 初始化单词表
+
+		ArrayList<ArrayList<Wordlist>> biglist = new ArrayList<ArrayList<Wordlist>>();
+		ArrayList<Wordlist> list = new ArrayList<Wordlist>();
+
+		Wordlist word = new Wordlist("add", new File(""));
+
+	}
+
 	public static void main(String[] args) throws WriteException, IOException {
 
-		String[] words = { "add", "arm", "apple", "bag", "ball", "banana", "bath", "basket", "bed", "big", "bike",
-				"bird", "black", "blue", "boat", "body", "book", "box", "boy", "bus", "burger", "can", "cat", "cake",
-				"car", "chair", "circle", "crocdile", "cream", "dad", "day", "dance", "dirty", "dog", "doll", "dot",
-				"duck", "ear", "eat", "eraser", "eye", "face", "father", "fish", "fly", "food", "foot", "football",
-				"frog", "game", "giraffe", "girl", "good", "grape", "green", "grey", "guitar", "hair", "hall", "hand",
-				"head", "hippo", "home", "horse", "house", "hot", "ice", "igloo", "iguana", "jacket", "jellyfish",
-				"kitchen", "knee", "leg", "lemon", "like", "listen", "long", "look", "lorry", "love", "make", "man",
-				"maths", "monkey", "mom", "mother", "monster", "mouse", "mouth", "music", "name", "no", "nose",
-				"number", "old", "open", "orange", "pear", "pen", "pencil", "pet", "piano", "picture", "pink", "plane",
-				"purple", "rainbow", "red", "ride", "river", "room", "sad", "say", "school", "see", "shoe", "short",
-				"sing", "sit", "skirt", "small", "snake", "smile", "sock", "sofa", "stand", "star", "swim", "stop",
-				"street", "table", "tail", "tennis", "tick", "tiger", "toe", "toy", "train", "tooth", "tree", "water",
-				"watermelon", "white", "woman", "yellow", "zebra", "zoo" };
+		InitWordlist();
+
+		String[] words = { "arm", "apple", "bag", "ball", "banana", "bath", "basket", "bed", "big", "bike", "bird",
+				"black", "blue", "boat", "body", "book", "box", "boy", "bus", "burger", "can", "cat", "cake", "car",
+				"chair", "circle", "crocdile", "dad", "dance", "dog", "doll", "dot", "duck", "ear", "eat", "eraser",
+				"eye", "face", "father", "fish", "fly", "food", "foot", "football", "frog", "giraffe", "girl", "good",
+				"grape", "green", "grey", "guitar", "hair", "hand", "head", "hippo", "horse", "house", "hot", "ice",
+				"igloo", "iguana", "jacket", "jellyfish", "kitchen", "knee", "leg", "lemon", "listen", "look", "lorry",
+				"love", "man", "maths", "monkey", "mom", "monster", "mouse", "mouth", "music", "nose", "number", "old",
+				"orange", "pear", "pen", "pencil", "piano", "pink", "plane", "purple", "rainbow", "red", "river",
+				"room", "sad", "say", "school", "see", "shoe", "short", "sing", "sit", "skirt", "small", "snake",
+				"smile", "sock", "sofa", "stand", "star", "swim", "stop", "street", "table", "tall", "tennis", "tick",
+				"tiger", "toe", "toy", "train", "tooth", "tree", "water", "watermelon", "white", "woman", "yellow",
+				"zebra", "zoo" };
 
 		OutputStream out = null;
 		try {
@@ -193,7 +228,7 @@ public class MyWord {
 
 		// String word = "apple";
 
-		createExcel(out, 100, words);
+		createExcel(out, 10, words);
 
 	}
 
